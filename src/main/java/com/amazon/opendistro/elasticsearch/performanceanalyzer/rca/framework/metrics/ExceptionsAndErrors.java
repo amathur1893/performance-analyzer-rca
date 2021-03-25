@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2019-2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -15,95 +15,96 @@
 
 package com.amazon.opendistro.elasticsearch.performanceanalyzer.rca.framework.metrics;
 
+
 import com.amazon.opendistro.elasticsearch.performanceanalyzer.rca.stats.eval.Statistics;
 import com.amazon.opendistro.elasticsearch.performanceanalyzer.rca.stats.measurements.MeasurementSet;
 import java.util.Collections;
 import java.util.List;
 
 public enum ExceptionsAndErrors implements MeasurementSet {
-  RCA_FRAMEWORK_CRASH("RcaFrameworkCrash"),
+    RCA_FRAMEWORK_CRASH("RcaFrameworkCrash"),
 
-  /**
-   * These are the cases when an exception was throws in the {@code operate()} method, that each RCA
-   * graph node implements.
-   */
-  EXCEPTION_IN_OPERATE("ExceptionInOperate", "namedCount", Statistics.NAMED_COUNTERS),
+    /**
+     * These are the cases when an exception was throws in the {@code operate()} method, that each
+     * RCA graph node implements.
+     */
+    EXCEPTION_IN_OPERATE("ExceptionInOperate", "namedCount", Statistics.NAMED_COUNTERS),
 
-  /**
-   * These are the cases when an exception was throws in the {@code compute()} method in publisher.
-   */
-  EXCEPTION_IN_COMPUTE("ExceptionInCompute", "namedCount", Statistics.NAMED_COUNTERS),
+    /**
+     * These are the cases when an exception was throws in the {@code compute()} method in
+     * publisher.
+     */
+    EXCEPTION_IN_COMPUTE("ExceptionInCompute", "namedCount", Statistics.NAMED_COUNTERS),
 
-  /**
-   * When calling the MetricsDB API throws an exception.
-   */
-  EXCEPTION_IN_GATHER("ExceptionInGather", "namedCount", Statistics.NAMED_COUNTERS),
+    /** When calling the MetricsDB API throws an exception. */
+    EXCEPTION_IN_GATHER("ExceptionInGather", "namedCount", Statistics.NAMED_COUNTERS),
 
-  /**
-   * When persisting action or flowunits, the persistable throws an exception when it is unable to write to DB.
-   */
-  EXCEPTION_IN_PERSIST("ExceptionInPersist", "namedCount", Statistics.NAMED_COUNTERS),
+    /**
+     * When persisting action or flowunits, the persistable throws an exception when it is unable to
+     * write to DB.
+     */
+    EXCEPTION_IN_PERSIST("ExceptionInPersist", "namedCount", Statistics.NAMED_COUNTERS),
 
-  /**
-   * When the reader encounters errors accessing metricsdb files.
-   */
-  READER_METRICSDB_ACCESS_ERRORS("ReaderMetricsdbAccessError"),
+    /** When the reader encounters errors accessing metricsdb files. */
+    READER_METRICSDB_ACCESS_ERRORS("ReaderMetricsdbAccessError"),
 
-  SHARD_STATE_COLLECTOR_ERROR("ShardStateCollectorError"),
+    SHARD_STATE_COLLECTOR_ERROR("ShardStateCollectorError"),
 
-  ADMISSION_CONTROL_COLLECTOR_ERROR("AdmissionControlCollectorError"),
+    ADMISSION_CONTROL_COLLECTOR_ERROR("AdmissionControlCollectorError"),
 
-  MASTER_THROTTLING_COLLECTOR_ERROR("MasterThrottlingMetricsCollector"),
+    MASTER_THROTTLING_COLLECTOR_ERROR("MasterThrottlingMetricsCollector"),
 
-  FAULT_DETECTION_COLLECTOR_ERROR("FaultDetectionMetricsCollector"),
+    FAULT_DETECTION_COLLECTOR_ERROR("FaultDetectionMetricsCollector"),
 
-  CLUSTER_APPLIER_SERVICE_STATS_COLLECTOR_ERROR("ClusterApplierServiceStatsCollector"),
+    CLUSTER_APPLIER_SERVICE_STATS_COLLECTOR_ERROR("ClusterApplierServiceStatsCollector"),
 
-  SHARD_INDEXING_PRESSURE_COLLECTOR_ERROR("ShardIndexingPressureMetricsCollector");
+    MASTER_CLUSTER_UPDATE_STATS_COLLECTOR_ERROR("MasterClusterStateUpdateStatsCollector"),
 
-  /** What we want to appear as the metric name. */
-  private String name;
+    SHARD_INDEXING_PRESSURE_COLLECTOR_ERROR("ShardIndexingPressureMetricsCollector");
 
-  /**
-   * The unit the measurement is in. This is not used for the statistics calculations but as an
-   * information that will be dumped with the metrics.
-   */
-  private String unit;
+    /** What we want to appear as the metric name. */
+    private String name;
 
-  /**
-   * Multiple statistics can be collected for each measurement like MAX, MIN and MEAN. This is a
-   * collection of one or more such statistics.
-   */
-  private List<Statistics> statsList;
+    /**
+     * The unit the measurement is in. This is not used for the statistics calculations but as an
+     * information that will be dumped with the metrics.
+     */
+    private String unit;
 
-  ExceptionsAndErrors(String name) {
-    this.name = name;
-    this.unit = "count";
-    this.statsList = Collections.singletonList(Statistics.COUNT);
-  }
+    /**
+     * Multiple statistics can be collected for each measurement like MAX, MIN and MEAN. This is a
+     * collection of one or more such statistics.
+     */
+    private List<Statistics> statsList;
 
-  ExceptionsAndErrors(String name, String unit, Statistics stats) {
-    this.name = name;
-    this.unit = unit;
-    this.statsList = Collections.singletonList(stats);
-  }
+    ExceptionsAndErrors(String name) {
+        this.name = name;
+        this.unit = "count";
+        this.statsList = Collections.singletonList(Statistics.COUNT);
+    }
 
-  public String toString() {
-    return new StringBuilder(name).append("-").append(unit).toString();
-  }
+    ExceptionsAndErrors(String name, String unit, Statistics stats) {
+        this.name = name;
+        this.unit = unit;
+        this.statsList = Collections.singletonList(stats);
+    }
 
-  @Override
-  public List<Statistics> getStatsList() {
-    return statsList;
-  }
+    public String toString() {
+        return new StringBuilder(name).append("-").append(unit).toString();
+    }
 
-  @Override
-  public String getName() {
-    return name;
-  }
+    @Override
+    public List<Statistics> getStatsList() {
+        return statsList;
+    }
 
-  @Override
-  public String getUnit() {
-    return unit;
-  }
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getUnit() {
+        return unit;
+    }
 }
